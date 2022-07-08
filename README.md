@@ -13,7 +13,7 @@ npm install react-native-context-store
 import { ContextStore, createProvider, StoreState } from "react-native-context-store";
 
 
-//setup
+//Define your types (optional)
 export interface AppStoreState extends StoreState {
     count: number;
     userName: string;
@@ -23,10 +23,13 @@ const appStoreState: AppStoreState = {
     userName: "Test Name"
 }
 
+//create your reacte context
 export const appContext = React.createContext<AppStoreState>(appStoreState);
+//create your store
 export const appStore = new ContextStore<AppStoreState>(appStoreState);
-const AppContextProviderComp = createProvider(appContext);
 
+//create your react context provider using your react context and app context store.
+const AppContextProviderComp = createProvider(appContext);
 export const AppContextProvider = (props: any) => {
     return <AppContextProviderComp store={appStore}>
         {props.children}
