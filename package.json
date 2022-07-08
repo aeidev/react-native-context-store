@@ -35,7 +35,7 @@
     "ios",
     "android"
   ],
-  "repository": "https://github.com/aeidev/react-native-context-store",
+  "repository": "https://github.com/aeidev/react-native-context-store.git",
   "author": "Andrew <frostie.dev@gmail.com> (https://github.com/aeidev)",
   "license": "MIT",
   "bugs": {
