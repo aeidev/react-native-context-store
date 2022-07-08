@@ -1,20 +1,42 @@
-import { NativeModules, Platform } from 'react-native';
+import * as React from 'react';
+import { useState } from 'react';
+import ContextStore from './ContextStore';
+import type Store from './types/Store';
+import type { StoreState } from "./types/StoreState";
 
-const LINKING_ERROR =
-  `The package 'react-native-context-store' doesn't seem to be linked. Make sure: \n\n` +
-  Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
-  '- You rebuilt the app after installing the package\n' +
-  '- You are not using Expo managed workflow\n';
-
-const ContextStore = NativeModules.ContextStore  ? NativeModules.ContextStore  : new Proxy(
-      {},
-      {
-        get() {
-          throw new Error(LINKING_ERROR);
-        },
+/**
+ * creates a context provider to use with your context store.
+ * @param context your react context
+ * @returns context privder that updates when your store values change.
+ */
+function createProvider<TStoreState extends StoreState>(context: React.Context<TStoreState>) {
+  return function contextProvider(props: { store: Store<TStoreState>, children: React.ReactNode }) {
+    let mounted = false;
+    const [storeState, setStoreState] = useState(props.store.getState())
+    React.useEffect(() => {
+      mounted = true;
+      const unsub = props.store.subscribe(updateState, true);
+      return () => {
+        mounted = false;
+        unsub();
       }
-    );
+    }, []);
 
-export function multiply(a: number, b: number): Promise<number> {
-  return ContextStore.multiply(a, b);
+    const updateState = (newState: TStoreState) => {
+      if (mounted === true) {
+        //note this won't work if newState is the same object but just a value change.
+        //This is currently handled in the ContextStore reducer functions but
+        // will revsit this.
+        setStoreState(newState);
+      }
+    }
+    return (
+      <context.Provider value={storeState}>
+        {props.children}
+      </context.Provider>
+    )
+  }
 }
+
+export { ContextStore, createProvider }
+export type { StoreState }

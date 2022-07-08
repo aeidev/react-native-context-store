@@ -1,19 +1,27 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-context-store';
+import { StyleSheet, View, Text, Button } from 'react-native';
+import { appContext, AppContextProvider, appStore } from './AppStore';
+
+const IncrementComponent = () => {
+  const localContext = React.useContext(appContext);
+  const onPress = () => appStore.dispatchValue("value", ++localContext.count);
+  return (
+    <View>
+      <Button title="increment" onPress={onPress} />
+      <Text>Count: {localContext.count}</Text>
+    </View>
+  );
+}
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
-
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
-
   return (
-    <View style={styles.container}>
-      <Text>Result: {result}</Text>
-    </View>
+    <AppContextProvider>
+      <View style={styles.container}>
+        <IncrementComponent />
+      </View>
+    </AppContextProvider>
+
   );
 }
 
@@ -29,3 +37,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
 });
+function AppStoreState(AppStoreState: any, arg1: number) {
+  throw new Error('Function not implemented.');
+}
+
