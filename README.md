@@ -23,7 +23,7 @@ const appStoreState: AppStoreState = {
     userName: "Test Name"
 }
 
-//create your reacte context
+//create your reactecontext
 export const appContext = React.createContext<AppStoreState>(appStoreState);
 //create your store
 export const appStore = new ContextStore<AppStoreState>(appStoreState);
