@@ -67,7 +67,10 @@ appStore.dispatch({value: 1, userName: "some name});
 appStore.getState();
 
 
-Updating the state outside of a component will trigger the context to update. You are not required to update state inside of components. Useful if you have logic seperate from your UI that may need to update your UI states.
+Updating the state outside of a component will trigger the context to update.
+You are not required to update state inside of components.
+This is useful if you have logic seperate from your UI that may need to update your UI states
+which is not possible with vanilla context api.
 
 
 // ...
