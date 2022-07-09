@@ -59,6 +59,17 @@ function App() {
 }
 
 
+// to update the state value(s)
+appStore.dispatchValue("value", ++localContext.count);
+//to update multieple
+appStore.dispatch({value: 1, userName: "some name});
+//to get access the current state
+appStore.getState();
+
+
+Updating the state outside of a component will trigger the context to update. You are not required to update state inside of components. Useful if you have logic seperate from your UI that may need to update your UI states.
+
+
 // ...
 ```
 
